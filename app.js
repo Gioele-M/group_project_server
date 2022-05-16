@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
-//import cors and app.use cors
 const cors = require('cors');
+const data = require('./data')
+
+
 
 // middlewares
 app.use(cors());
@@ -14,7 +16,7 @@ app.get('/', (req, res) => {
 
 // Get all jokes
 app.get('/jokes', (req, res) => {
-	res.send(jokes);
+	res.send(data.objectTypeJokeMany);
 	// --------- remember to define jokes
 });
 
@@ -22,7 +24,7 @@ app.get('/jokes', (req, res) => {
 app.get('/jokes/:id', (req, res) => {
 	try {
 		const jokeId = parseInt(req.params.id);
-		const joke = jokes[jokeId - 1];
+		const joke = data.objectTypeJokeMany[jokeId - 1];
 
 		if (!joke) {
 			throw new Error('This joke does not exist');
@@ -33,6 +35,11 @@ app.get('/jokes/:id', (req, res) => {
 		res.status(404).send({ message: err.message });
 	}
 });
+
+
+
+
+
 
 // Post new joke
 app.post('/jokes/new', (req, res) => {

@@ -35,8 +35,8 @@ app.get('/jokes/:id', (req, res) => {
 });
 
 // Post new joke
-app.post('jokes/new', (req, res) => {
-	const newJokeId = cats.length + 1;
+app.post('/jokes/new', (req, res) => {
+	const newJokeId = jokes.length + 1;
 
 	const newJoke = { ...req.body, id: newJokeId };
 	jokes.push(newJoke);

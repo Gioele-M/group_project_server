@@ -70,10 +70,45 @@ app.delete('/jokes/:id', (req, res) => {
     // req.body.id -> find this id in array -> get index -> remove by index
 
     // Replace empty object instead of splicing? 
-    jokes.splice(req.params.id -1, 1)
+
+
+    //Find object reference by ID and remove it, throw error if no object with asked id 
+
+    try{
+        const idToRemove = req.params.id
+        let objToRemove = null
+        let indexToRemove = null
+
+        // Check if the joke with requested ID is present in array, if it is get object reference and index
+        for(const joke of jokes){
+            if(joke.id == idToRemove){
+                objToRemove = joke
+                indexToRemove = jokes.indexOf(joke)
+            }
+        }
+
+        //Could be done better
+        //If the object exists, remove it and send success status
+        if(objToRemove){
+            jokes.splice(indexToRemove, 1)
     
-    console.log(`Joke ${req.params.id} was deleted`)
-    res.status(204).end()
+            console.log(`Joke ${req.params.id} was deleted`)
+            res.status(204).end()
+        }else{
+            //else throw error
+            throw new Error('This reference is not valid, joke was already deleted or non existent')
+        }
+
+    }catch(err){
+        console.log('Something went wrong ' + err.message)
+        res.status(404).end()
+    }
+    
+    
+
+
+
+    
 });
 
 

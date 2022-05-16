@@ -24,7 +24,11 @@ app.get('/jokes', (req, res) => {
 app.get('/jokes/:id', (req, res) => {
 	try {
 		const jokeId = parseInt(req.params.id);
-		const joke = data.objectTypeJokeMany[jokeId - 1];
+        //find the joke ID instead
+        
+		//const joke = data.objectTypeJokeMany[jokeId - 1];
+
+        const joke = data.objectTypeJokeMany.find(e=> e.id == req.params.id)
 
 		if (!joke) {
 			throw new Error('This joke does not exist');
@@ -53,6 +57,8 @@ app.post('/jokes/new', (req, res) => {
 }
 )
 
+// Post requires the whole object in the body of the request!
+
 
 
 // Delete specific joke
@@ -63,11 +69,14 @@ app.delete('/jokes/:id', (req, res) => {
     // Longer solution
     // req.body.id -> find this id in array -> get index -> remove by index
 
-    let indexToRemove = req.body.id
-    data.objectTypeJokeMany.splice(req.body.id -1, 1)
+    // Replace empty object instead of splicing? 
+    data.objectTypeJokeMany.splice(req.params.id -1, 1)
     
-    console.log('should have worked')
+    console.log('Joke was deleted')
     res.status(204).end()
 });
 
 module.exports = app;
+
+
+

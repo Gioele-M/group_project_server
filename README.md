@@ -12,4 +12,11 @@ add user id popup, only correct users can change this
 
 
 # to do immediate
-Avoid /jokes/:id index shifting when deleting a joke (Eg joke id 2 goes in /jokes/1)
+-add other endpoints 
+patch and put - comments
+
+- Make model of request (fetch) -> develop fn for event listener
+
+- Start connect frontend 
+
+- Test

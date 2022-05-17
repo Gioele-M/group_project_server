@@ -101,13 +101,61 @@ app.delete('/jokes/:id', (req, res) => {
 
     }catch(err){
         console.log('Something went wrong ' + err.message)
-        res.status(404).end()
+        res.status(404).send({message: err.message})
     }
     
 });
 
 
 
+// Patching endpoints
+// Change text content of joke
+
+app.patch('/jokes/:id', (req, res)=>{
+    try{
+        //Get joke id requested
+        let textIdToChange = req.params.id
+
+        //Check that the joke exists, if it does return object reference,if it doesn't throw error
+        let objToChange
+
+        for(const joke of jokes){
+            if(joke.id == textIdToChange){
+                objToChange = joke
+                console.log('Object was found')
+            }
+        }
+        if(!objToChange) throw new Error('This joke does not exist')
+
+
+        console.log(objToChange)
+
+        //Go through all the parameters and update the ones sent
+
+        if(req.body.jokeText){
+            objToChange.jokeText = req.body.jokeText
+            console.log('Text was updated!')
+            res.status(202).send('Joke changes accepted')
+        }
+
+        // This works, other parameters to be added?
+
+
+    }catch(err){
+        res.status(404).send({message: err.message})
+    }
+
+
+
+
+
+    
+    
+    //Determine the request body
+
+
+
+})
 
 
 

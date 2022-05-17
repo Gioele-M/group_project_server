@@ -85,6 +85,33 @@ app.post('/jokes/new', (req, res) => {
 // Post requires the whole object in the body of the request!
 
 
+//Post new comment
+app.post('/jokes/:id/comments', (req, res)=>{
+    try{
+        // determine :id and search for comments
+        const joke = jokes.find(e=> e.id == req.params.id)
+
+        //Throw error if there's no joke w that id
+        if (!joke) {
+			throw new Error('This joke does not exist')
+		} else {
+            //Get the object comments from joke, append comment, send success response
+            joke.comments.push(req.body)
+            res.status(201).send(req.body.commentText + '. Was posted')
+        }
+
+
+    }catch(err){
+        res.status(404).send('Error message: '+{message: err.message})
+    }
+})
+
+
+
+
+
+
+
 
 // Delete specific joke
 app.delete('/jokes/:id', (req, res) => {

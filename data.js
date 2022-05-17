@@ -186,6 +186,12 @@ const sampleRequestComment= {
     }
 }
 
+const sampleRequestEmoji = {
+    "jokeReactions": {
+      "emoji1": 1
+    }
+  }
+
 
 
 let objectTypeCommentMany = [

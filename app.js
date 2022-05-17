@@ -233,8 +233,6 @@ app.patch('/jokes/:id', (req, res)=>{
         if(!objToChange) throw new Error('This joke does not exist')
 
 
-        console.log(objToChange)
-
         //Go through all the parameters and update the ones sent
 
         if(req.body.jokeText){
@@ -242,6 +240,22 @@ app.patch('/jokes/:id', (req, res)=>{
             console.log('Text was updated!')
             res.status(202).send('Joke changes accepted')
         }
+
+        if(req.body.jokeReactions.emoji1){
+            objToChange.jokeReactions.emoji1 += 1
+            res.status(202).send('Emoji added')
+        }
+
+        if(req.body.jokeReactions.emoji2){
+            objToChange.jokeReactions.emoji2 += 1
+            res.status(202).send('Emoji added')
+        }
+
+        if(req.body.jokeReactions.emoji3){
+            objToChange.jokeReactions.emoji3 += 1
+            res.status(202).send('Emoji added')
+        }
+        
 
         // This works, other parameters to be added?
 
@@ -253,7 +267,7 @@ app.patch('/jokes/:id', (req, res)=>{
 })
 
 
-
+// Need to make sure patch endpoint changes value of emojis too, then do the same for comments!
 
 
 

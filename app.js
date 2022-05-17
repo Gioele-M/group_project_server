@@ -10,6 +10,10 @@ let singleComment = data.objectTypeComment
 app.use(cors());
 app.use(express.json());
 
+//Refactor code as in
+//Functions for repeated bits - If else in ? :
+
+
 
 
 // To be deleted
@@ -100,7 +104,7 @@ app.post('/jokes/:id/comments', (req, res)=>{
             joke.comments.push({...req.body, commentID : newCommentId})
             res.status(201).send(req.body.commentText + '. Was posted')
         }
-        
+
     }catch(err){
         res.status(404).send('Error message: '+{message: err.message})
     }
@@ -115,19 +119,10 @@ app.post('/jokes/:id/comments', (req, res)=>{
 
 // Delete specific joke
 app.delete('/jokes/:id', (req, res) => {
-    // from req body 
-    // either : data.find(?) -> look for array method that matches object
-
-    // Longer solution
-    // req.body.id -> find this id in array -> get index -> remove by index
-
-    // Replace empty object instead of splicing? 
-
-
-    //Find object reference by ID and remove it, throw error if no object with asked id 
-
+    
     try{
         const idToRemove = req.params.id
+        //When testing try if for..of scope is accessible, then declare there
         let objToRemove 
         let indexToRemove
 
@@ -157,6 +152,64 @@ app.delete('/jokes/:id', (req, res) => {
     }
     
 });
+
+
+//Delete comment
+//Get joke from id, get comment body, match it with joke comment list, remove comment, send successful status
+
+app.delete('/jokes/:id/comments', (req, res)=>{
+    try{
+        //Get joke from id
+        //When testing try if for..of scope is accessible, then declare there
+        let objToRemove 
+
+        // Check if the joke with requested ID is present in array, if it is get object reference and index
+        for(const joke of jokes){
+            if(joke.id == req.params.id){
+                objToRemove = joke
+            }
+        }
+
+        //Could be done better
+        //If the joke object exists get the comments and find comment to remove by id
+        if(objToRemove){
+            let {comments} =objToRemove
+
+            //Store index to remove
+            let indexToRemove
+            for (const comment of comments) {
+                if(comment.commentID == req.body.commentID){
+                    indexToRemove = comments.indexOf(comment)
+                }
+            }
+
+            //Remove comment by index
+            if(indexToRemove){
+                comments.splice(indexToRemove, 1)
+                console.log(`Comment ${req.body.commentText} was deleted`)
+                res.status(204).send(`Comment ${req.body.commentText} was deleted`)
+
+            }else{
+                throw new Error('Could not find comment')
+            }
+
+
+            
+        }else{
+            //else throw error
+            throw new Error('The reference joke id is not valid')
+        }
+
+    }catch(err){
+        console.log('Something went wrong ' + err.message)
+        res.status(404).send({message: err.message})
+    }
+})
+
+
+
+
+
 
 
 

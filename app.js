@@ -3,7 +3,8 @@ const app = express()
 const cors = require('cors')
 const data = require('./data')
 let jokes = data.objectTypeJokeMany
-
+let comments  = data.objectTypeCommentMany
+let singleComment = data.objectTypeComment
 
 // middlewares
 app.use(cors());
@@ -39,6 +40,30 @@ app.get('/jokes/:id', (req, res) => {
 		res.status(404).send({ message: err.message })
 	}
 });
+
+
+// Get joke's comments
+app.get('/jokes/:id/comments', (req, res)=>{
+    try{
+        // determine :id and search for comments
+        const joke = jokes.find(e=> e.id == req.params.id)
+
+        //Throw error if there's no joke w that id
+        if (!joke) {
+			throw new Error('This joke does not exist')
+		} else {
+            //Get the object comments from joke and post
+            res.status(200).send(joke.comments)
+        }
+
+
+    }catch(err){
+        res.status(404).send({message: err.message})
+    }
+})
+
+
+
 
 
 
@@ -145,17 +170,12 @@ app.patch('/jokes/:id', (req, res)=>{
         res.status(404).send({message: err.message})
     }
 
-
-
-
-
-    
-    
-    //Determine the request body
-
-
-
 })
+
+
+
+
+
 
 
 

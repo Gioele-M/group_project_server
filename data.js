@@ -110,7 +110,7 @@ let objectTypeJokeMany = [
             // for the moment it stores an array of comments objects
             {
                 commentID: 1, 
-                commentText: 'Based on user input as well!',
+                commentText: 'Only two comments!',
                 commentReactions:{
                     emoji1: 0, 
                     emoji2: 0,
@@ -126,16 +126,7 @@ let objectTypeJokeMany = [
                     emoji3: 0 
                 },
             },
-            {
-                commentID: 3, 
-                commentText: 'Based on user input as well!',
-                commentReactions:{
-                    emoji1: 0, 
-                    emoji2: 0,
-                    emoji3: 0 
-                },
-            }
-    
+           
         ]
     },
     {
@@ -150,7 +141,7 @@ let objectTypeJokeMany = [
         "comments": [
             {
                 "commentID": 1, 
-                "commentText": "Based on user input as well!",
+                "commentText": "Only one comment!!",
                 "commentReactions":{
                     "emoji1": 0, 
                     "emoji2": 0,
@@ -186,10 +177,41 @@ const sampleRequest = {
 }
 
 
+let objectTypeCommentMany = [
+    {
+        commentID: 1, 
+        commentText: 'This is comment 1',
+        commentReactions:{
+            emoji1: 0, //same as joke obj
+            emoji2: 0,
+            emoji3: 0 
+        }
+    },
+    {
+        commentID: 1, 
+        commentText: 'This is comment 2',
+        commentReactions:{
+            emoji1: 0, 
+            emoji2: 0,
+            emoji3: 0 
+        }
+    },
+    {
+        "commentID": 1, 
+        "commentText": "This is comment 3!",
+        "commentReactions":{
+            "emoji1": 0, 
+            "emoji2": 0,
+            "emoji3": 0 
+        }
+    }
+]
 
 
 
 
 
 
-module.exports = {objectTypeJoke, objectTypeComment, objectTypeJokeMany, sampleRequest}
+
+
+module.exports = {objectTypeJoke, objectTypeComment, objectTypeJokeMany, sampleRequest, objectTypeCommentMany}

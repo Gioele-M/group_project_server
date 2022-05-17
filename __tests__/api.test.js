@@ -121,6 +121,17 @@ describe('API server', () => {
 			.post('/jokes/new')
 			.send(testJoke)
 			.set('Content-type', 'application/json')
-			.expect(201);
+			.expect(201, done);
+	});
+
+	test('responds to delete /jokes/:id with status 201', async () => {
+		await request(api).delete('/jokes/4').expect(204);
+
+		const updatedJokes = await request(api).get('/jokes');
+
+		expect(updatedJokes.body.length).toBe(3);
 	});
 });
+
+// tests to add:
+// - app.js:  line 99-104

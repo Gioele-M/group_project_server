@@ -95,12 +95,12 @@ app.post('/jokes/:id/comments', (req, res)=>{
         if (!joke) {
 			throw new Error('This joke does not exist')
 		} else {
-            //Get the object comments from joke, append comment, send success response
-            joke.comments.push(req.body)
+            //Get the object comments from joke, check last comment ID, add ID to response body, append comment, send success response
+            const newCommentId = joke.comments[joke.comments.length - 1].commentID + 1
+            joke.comments.push({...req.body, commentID : newCommentId})
             res.status(201).send(req.body.commentText + '. Was posted')
         }
-
-
+        
     }catch(err){
         res.status(404).send('Error message: '+{message: err.message})
     }

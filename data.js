@@ -155,7 +155,7 @@ let objectTypeJokeMany = [
 
 
 
-const sampleRequest = {
+const sampleRequestJoke = {
     "jokeText": "This is a sample text",
     "jokeEmoji": "#",
     "jokeReactions": {
@@ -175,6 +175,17 @@ const sampleRequest = {
         }
     ]
 }
+
+const sampleRequestComment= {
+    "commentID": 123,
+    "commentText": "Test comment",
+    "commentReactions": {
+      "emoji1": 0,
+      "emoji2": 0,
+      "emoji3": 0
+    }
+}
+
 
 
 let objectTypeCommentMany = [
@@ -214,4 +225,4 @@ let objectTypeCommentMany = [
 
 
 
-module.exports = {objectTypeJoke, objectTypeComment, objectTypeJokeMany, sampleRequest, objectTypeCommentMany}
+module.exports = {objectTypeJoke, objectTypeComment, objectTypeJokeMany, sampleRequestJoke, sampleRequestComment,  objectTypeCommentMany}

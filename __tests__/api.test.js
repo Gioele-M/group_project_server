@@ -121,6 +121,9 @@ describe('API server', () => {
 			.post('/jokes/new')
 			.send(testJoke)
 			.set('Content-type', 'application/json')
-			.expect(201);
+			.expect(201, done);
 	});
 });
+
+// tests to add:
+// - app.js: line 52-56. line 77-104

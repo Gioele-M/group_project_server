@@ -124,14 +124,15 @@ describe('API server', () => {
 			.expect(201, done);
 	});
 
-	test('responds to delete /jokes/:id with status 201', async () => {
+	test('responds to delete /jokes/:id with status 204', async () => {
 		await request(api).delete('/jokes/4').expect(204);
 
 		const updatedJokes = await request(api).get('/jokes');
 
 		expect(updatedJokes.body.length).toBe(3);
 	});
-});
 
-// tests to add:
-// - app.js:  line 99-104
+	test('responds to delete non-existent joke with status 404', (done) => {
+		request(api).delete('/jokes/394').expect(404, done);
+	});
+});

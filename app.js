@@ -90,7 +90,7 @@ app.post('/jokes/new', (req, res) => {
 
 
 //Post new comment
-app.post('/jokes/:id/comments', (req, res)=>{
+app.post('/jokes/:id/comments/new', (req, res)=>{
     try{
         // determine :id and search for comments
         const joke = jokes.find(e=> e.id == req.params.id)

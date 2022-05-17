@@ -76,8 +76,8 @@ app.delete('/jokes/:id', (req, res) => {
 
     try{
         const idToRemove = req.params.id
-        let objToRemove = null
-        let indexToRemove = null
+        let objToRemove 
+        let indexToRemove
 
         // Check if the joke with requested ID is present in array, if it is get object reference and index
         for(const joke of jokes){
@@ -103,11 +103,6 @@ app.delete('/jokes/:id', (req, res) => {
         console.log('Something went wrong ' + err.message)
         res.status(404).end()
     }
-    
-    
-
-
-
     
 });
 

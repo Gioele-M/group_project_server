@@ -218,14 +218,12 @@ app.delete('/jokes/:id/comments', (req, res)=>{
 
 app.patch('/jokes/:id', (req, res)=>{
     try{
-        //Get joke id requested
-        let textIdToChange = req.params.id
-
+        
         //Check that the joke exists, if it does return object reference,if it doesn't throw error
         let objToChange
 
         for(const joke of jokes){
-            if(joke.id == textIdToChange){
+            if(joke.id == req.params.id){
                 objToChange = joke
                 console.log('Object was found')
             }
@@ -267,7 +265,67 @@ app.patch('/jokes/:id', (req, res)=>{
 })
 
 
+
 // Need to make sure patch endpoint changes value of emojis too, then do the same for comments!
+app.patch('/jokes/:id/comments', (req, res)=>{
+    try{
+        
+        //Check that the joke exists, if it does return object reference,if it doesn't throw error
+        let objToChange
+
+        for(const joke of jokes){
+            if(joke.id == req.params.id){
+                objToChange = joke
+                console.log('Object was found')
+            }
+        }
+        if(!objToChange) throw new Error('This joke does not exist')
+
+
+
+        //Get the commments and determine if comment is there
+               
+        let {comments} = objToChange
+
+        //Get reference to comment to change
+        let commentToChange
+
+        for (const comment of comments) {
+            if(comment.commentID == req.body.commentID){
+                commentToChange = comment
+            }
+        }
+        if(!commentToChange){
+            throw new Error('Could not find this comment')
+        }
+
+        if(req.body.commentText){
+            commentToChange.commentText = req.body.commentText
+            res.status(202).send('Comment updated')
+        }
+
+        if(req.body.commentReactions.emoji1){
+            commentToChange.commentReactions.emoji1 += 1
+            res.status(202).send('Emoji added')
+        }
+
+        if(req.body.commentReactions.emoji2){
+            commentToChange.commentReactions.emoji2 += 1
+            res.status(202).send('Emoji added')
+        }
+
+        if(req.body.commentReactions.emoji3){
+            commentToChange.commentReactions.emoji3 += 1
+            res.status(202).send('Emoji added')
+        }
+        
+        // This works, other parameters to be added?
+
+    }catch(err){
+        res.status(404).send({message: err.message})
+    }
+
+})
 
 
 

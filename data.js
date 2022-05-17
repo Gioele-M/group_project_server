@@ -186,8 +186,15 @@ const sampleRequestComment= {
     }
 }
 
-const sampleRequestEmoji = {
+const sampleRequestJokeEmoji = {
     "jokeReactions": {
+      "emoji1": 1
+    }
+  }
+
+const sampleRequestCommentEmoji ={
+    "commentID": 1,
+    "commentReactions": {
       "emoji1": 1
     }
   }

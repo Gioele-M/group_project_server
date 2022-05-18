@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const data = require('./data');
+const listEndpoints = require('express-list-endpoints');
+
 let jokes = data.objectTypeJokeMany;
 let comments = data.objectTypeCommentMany;
 let singleComment = data.objectTypeComment;
@@ -17,6 +19,10 @@ app.use(express.json());
 app.get('/', (req, res) => {
 	// .get requires the page
 	res.status(200).send('Hello Auguste!'); //This is what's put on the page
+});
+
+app.get('/endpoints', (req, res) => {
+	res.send(listEndpoints(app));
 });
 
 // Get all jokes
@@ -96,43 +102,27 @@ app.post('/jokes/:id/comments/new', (req, res) => {
 
 // Delete specific joke
 app.delete('/jokes/:id', (req, res) => {
+	try {
+		const idToRemove = req.params.id;
+		//When testing try if for..of scope is accessible, then declare there
+		let objToRemove;
+		let indexToRemove;
 
-    
-    try{
-        const idToRemove = req.params.id
-        //When testing try if for..of scope is accessible, then declare there
-        let objToRemove 
-        let indexToRemove
+		// Check if the joke with requested ID is present in array, if it is get object reference and index
+		for (const joke of jokes) {
+			if (joke.id == idToRemove) {
+				objToRemove = joke;
+				indexToRemove = jokes.indexOf(joke);
+			}
+		}
 
-        // Check if the joke with requested ID is present in array, if it is get object reference and index
-        for(const joke of jokes){
-            if(joke.id == idToRemove){
-                objToRemove = joke
-                indexToRemove = jokes.indexOf(joke)
-            }
-        }
-
-        //Could be done better
-        //If the object exists, remove it and send success status
-        if(objToRemove){
-            jokes.splice(indexToRemove, 1)
-    
-            console.log(`Joke ${req.params.id} was deleted`)
-            res.status(204).send("Joke was removed")
-        }else{
-            //else throw error
-            throw new Error('This reference is not valid, joke was already deleted or non existent')
-        }
-
-    }catch(err){
-        console.log('Something went wrong ' + err.message)
-        res.status(404).send({message: err.message})
-    }
-    
-});
+		//Could be done better
+		//If the object exists, remove it and send success status
+		if (objToRemove) {
+			jokes.splice(indexToRemove, 1);
 
 			console.log(`Joke ${req.params.id} was deleted`);
-			res.status(204).end();
+			res.status(204).send('Joke was removed');
 		} else {
 			//else throw error
 			throw new Error(
@@ -198,56 +188,46 @@ app.delete('/jokes/:id/comments', (req, res) => {
 // Patching endpoints
 // Change text content of joke
 
-app.patch('/jokes/:id', (req, res)=>{
-    try{
-        
-        //Check that the joke exists, if it does return object reference,if it doesn't throw error
-        let objToChange
+app.patch('/jokes/:id', (req, res) => {
+	try {
+		//Check that the joke exists, if it does return object reference,if it doesn't throw error
+		let objToChange;
 
-        for(const joke of jokes){
-            if(joke.id == req.params.id){
-                objToChange = joke
-                console.log('Object was found')
-            }
-        }
-        if(!objToChange) throw new Error('This joke does not exist')
+		for (const joke of jokes) {
+			if (joke.id == req.params.id) {
+				objToChange = joke;
+				console.log('Object was found');
+			}
+		}
+		if (!objToChange) throw new Error('This joke does not exist');
 
+		//Go through all the parameters and update the ones sent
 
-        //Go through all the parameters and update the ones sent
+		if (req.body.jokeText) {
+			objToChange.jokeText = req.body.jokeText;
+			console.log('Text was updated!');
+			res.status(202).send('Joke changes accepted');
+			res.end();
+		} else if (req.body.jokeEmoji) {
+			objToChange.jokeEmoji = req.body.jokeEmoji;
+			console.log('Emoji was updated');
+			res.status(202).send('Joke giphy added');
+		} else if (req.body.jokeReactions.emoji1) {
+			console.log('it found the emoji1');
+			objToChange.jokeReactions.emoji1 += 1;
+			res.status(202).send('Emoji added');
+		} else if (req.body.jokeReactions.emoji2) {
+			objToChange.jokeReactions.emoji2 += 1;
+			res.status(202).send('Emoji added');
+		} else if (req.body.jokeReactions.emoji3) {
+			objToChange.jokeReactions.emoji3 += 1;
+			res.status(202).send('Emoji added');
+		}
 
-        if(req.body.jokeText){
-            objToChange.jokeText = req.body.jokeText
-            console.log('Text was updated!')
-            res.status(202).send('Joke changes accepted')
-            res.end()
-        }
-        else if(req.body.jokeEmoji){
-            objToChange.jokeEmoji = req.body.jokeEmoji
-            console.log('Emoji was updated')
-            res.status(202).send('Joke giphy added')
-        }
-        else if(req.body.jokeReactions.emoji1){
-            console.log('it found the emoji1')
-            objToChange.jokeReactions.emoji1 += 1
-            res.status(202).send('Emoji added')
-        }
-        else if(req.body.jokeReactions.emoji2){
-            objToChange.jokeReactions.emoji2 += 1
-            res.status(202).send('Emoji added')
-        }
-        else if(req.body.jokeReactions.emoji3){
-            objToChange.jokeReactions.emoji3 += 1
-            res.status(202).send('Emoji added')
-        }
-        
+		// This works, other parameters to be added?
+		// This is best done in a switch statement so not to risk having multiple parameters sent at one time so causing issues
 
-
-        // This works, other parameters to be added?
-        // This is best done in a switch statement so not to risk having multiple parameters sent at one time so causing issues
-
-        //Works now
-
-
+		//Works now
 
 		if (req.body.jokeText) {
 			objToChange.jokeText = req.body.jokeText;
@@ -278,63 +258,20 @@ app.patch('/jokes/:id', (req, res)=>{
 
 // Need to make sure patch endpoint changes value of emojis too, then do the same for comments!
 
+app.patch('/jokes/:id/comments', (req, res) => {
+	try {
+		//Check that the joke exists, if it does return object reference,if it doesn't throw error
+		let objToChange;
 
-app.patch('/jokes/:id/comments', (req, res)=>{
-    try{
-        
-        //Check that the joke exists, if it does return object reference,if it doesn't throw error
-        let objToChange
+		for (const joke of jokes) {
+			if (joke.id == req.params.id) {
+				objToChange = joke;
+				console.log('Object was found');
+			}
+		}
+		if (!objToChange) throw new Error('This joke does not exist');
 
-        for(const joke of jokes){
-            if(joke.id == req.params.id){
-                objToChange = joke
-                console.log('Object was found')
-            }
-        }
-        if(!objToChange) throw new Error('This joke does not exist')
-
-
-
-        //Get the commments and determine if comment is there
-               
-        let {comments} = objToChange
-
-        //Get reference to comment to change
-        let commentToChange
-
-        for (const comment of comments) {
-            if(comment.commentID == req.body.commentID){
-                commentToChange = comment
-            }
-        }
-        if(!commentToChange){
-            throw new Error('Could not find this comment')
-        }
-
-
-        //Check what element was sent to be patched and update accordingly
-
-        if(req.body.commentText){
-            commentToChange.commentText = req.body.commentText
-            res.status(202).send('Comment updated')
-        }
-        else if(req.body.commentReactions.emoji1){
-            commentToChange.commentReactions.emoji1 += 1
-            res.status(202).send('Emoji added')
-        }
-        else if(req.body.commentReactions.emoji2){
-            commentToChange.commentReactions.emoji2 += 1
-            res.status(202).send('Emoji added')
-        }
-        else if(req.body.commentReactions.emoji3){
-            commentToChange.commentReactions.emoji3 += 1
-            res.status(202).send('Emoji added')
-        }
-        
-        // This works, other parameters to be added?
-
-
-		//Get the commments and determine if comment is there
+		//Get the comments and determine if comment is there
 
 		let { comments } = objToChange;
 
@@ -350,22 +287,18 @@ app.patch('/jokes/:id/comments', (req, res)=>{
 			throw new Error('Could not find this comment');
 		}
 
+		//Check what element was sent to be patched and update accordingly
+
 		if (req.body.commentText) {
 			commentToChange.commentText = req.body.commentText;
 			res.status(202).send('Comment updated');
-		}
-
-		if (req.body.commentReactions.emoji1) {
+		} else if (req.body.commentReactions.emoji1) {
 			commentToChange.commentReactions.emoji1 += 1;
 			res.status(202).send('Emoji added');
-		}
-
-		if (req.body.commentReactions.emoji2) {
+		} else if (req.body.commentReactions.emoji2) {
 			commentToChange.commentReactions.emoji2 += 1;
 			res.status(202).send('Emoji added');
-		}
-
-		if (req.body.commentReactions.emoji3) {
+		} else if (req.body.commentReactions.emoji3) {
 			commentToChange.commentReactions.emoji3 += 1;
 			res.status(202).send('Emoji added');
 		}

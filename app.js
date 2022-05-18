@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const data = require('./data');
+const listEndpoints = require('express-list-endpoints');
+
 let jokes = data.objectTypeJokeMany;
 let comments = data.objectTypeCommentMany;
 let singleComment = data.objectTypeComment;
@@ -17,6 +19,10 @@ app.use(express.json());
 app.get('/', (req, res) => {
 	// .get requires the page
 	res.status(200).send('Hello Auguste!'); //This is what's put on the page
+});
+
+app.get('/endpoints', (req, res) => {
+	res.send(listEndpoints(app));
 });
 
 // Get all jokes

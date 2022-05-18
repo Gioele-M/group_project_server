@@ -43,6 +43,16 @@ describe('API server', () => {
 		],
 	};
 
+	let testComment = {
+		commentID: 3,
+		commentText: 'Based on user input as well!',
+		commentReactions: {
+			emoji1: 0,
+			emoji2: 0,
+			emoji3: 0,
+		},
+	};
+
 	beforeAll(() => {
 		api = server.listen(5000, () =>
 			console.log('test server running on port 5000')
@@ -54,6 +64,7 @@ describe('API server', () => {
 		api.close(done);
 	});
 
+	// -------- GET
 	test('it responds to get / with status 200', (done) => {
 		request(api).get('/').expect(200, done);
 	});
@@ -78,7 +89,7 @@ describe('API server', () => {
 					comments: [
 						{
 							commentID: 1,
-							commentText: 'Based on user input as well!',
+							commentText: 'Only two comments!',
 							commentReactions: {
 								emoji1: 0,
 								emoji2: 0,
@@ -87,15 +98,6 @@ describe('API server', () => {
 						},
 						{
 							commentID: 2,
-							commentText: 'Based on user input as well!',
-							commentReactions: {
-								emoji1: 0,
-								emoji2: 0,
-								emoji3: 0,
-							},
-						},
-						{
-							commentID: 3,
 							commentText: 'Based on user input as well!',
 							commentReactions: {
 								emoji1: 0,
@@ -116,6 +118,19 @@ describe('API server', () => {
 			.expect({ message: 'This joke does not exist' }, done);
 	});
 
+	test('it responds to get /jokes/:id/comments with status 200', (done) => {
+		request(api).get('/jokes/2/comments').expect(200, done);
+	});
+
+	test('responds to non-existent joke with a status 404', (done) => {
+		request(api)
+			.get('/jokes/394/comments')
+			.expect(404)
+			.expect({ message: 'This joke does not exist' }, done);
+	});
+
+	// -------- POST
+
 	test('responds to post /jokes/new with status 201', (done) => {
 		request(api)
 			.post('/jokes/new')
@@ -123,6 +138,23 @@ describe('API server', () => {
 			.set('Content-type', 'application/json')
 			.expect(201, done);
 	});
+
+	test('responds to post /jokes/:id/comments/new with status 201', (done) => {
+		request(api)
+			.post('/jokes/1/comments/new')
+			.send(testComment)
+			.set('Content-type', 'application/json')
+			.expect(201, done);
+	});
+
+	test('responds to non-existent joke with a status 404', (done) => {
+		request(api)
+			.post('/jokes/394/comments/new')
+			.expect(404)
+			.expect({ message: 'This joke does not exist' }, done);
+	});
+
+	// -------- DELETE
 
 	test('responds to delete /jokes/:id with status 204', async () => {
 		await request(api).delete('/jokes/4').expect(204);

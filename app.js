@@ -312,22 +312,22 @@ app.patch('/jokes/:id/comments', (req, res)=>{
             throw new Error('Could not find this comment')
         }
 
+
+        //Check what element was sent to be patched and update accordingly
+
         if(req.body.commentText){
             commentToChange.commentText = req.body.commentText
             res.status(202).send('Comment updated')
         }
-
-        if(req.body.commentReactions.emoji1){
+        else if(req.body.commentReactions.emoji1){
             commentToChange.commentReactions.emoji1 += 1
             res.status(202).send('Emoji added')
         }
-
-        if(req.body.commentReactions.emoji2){
+        else if(req.body.commentReactions.emoji2){
             commentToChange.commentReactions.emoji2 += 1
             res.status(202).send('Emoji added')
         }
-
-        if(req.body.commentReactions.emoji3){
+        else if(req.body.commentReactions.emoji3){
             commentToChange.commentReactions.emoji3 += 1
             res.status(202).send('Emoji added')
         }

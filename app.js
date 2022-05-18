@@ -140,7 +140,7 @@ app.delete('/jokes/:id', (req, res) => {
             jokes.splice(indexToRemove, 1)
     
             console.log(`Joke ${req.params.id} was deleted`)
-            res.status(204).end()
+            res.status(204).send("Joke was removed")
         }else{
             //else throw error
             throw new Error('This reference is not valid, joke was already deleted or non existent')
@@ -240,25 +240,35 @@ app.patch('/jokes/:id', (req, res)=>{
             objToChange.jokeText = req.body.jokeText
             console.log('Text was updated!')
             res.status(202).send('Joke changes accepted')
+            res.end()
         }
-
-        if(req.body.jokeReactions.emoji1){
+        else if(req.body.jokeEmoji){
+            objToChange.jokeEmoji = req.body.jokeEmoji
+            console.log('Emoji was updated')
+            res.status(202).send('Joke giphy added')
+        }
+        else if(req.body.jokeReactions.emoji1){
+            console.log('it found the emoji1')
             objToChange.jokeReactions.emoji1 += 1
             res.status(202).send('Emoji added')
         }
-
-        if(req.body.jokeReactions.emoji2){
+        else if(req.body.jokeReactions.emoji2){
             objToChange.jokeReactions.emoji2 += 1
             res.status(202).send('Emoji added')
         }
-
-        if(req.body.jokeReactions.emoji3){
+        else if(req.body.jokeReactions.emoji3){
             objToChange.jokeReactions.emoji3 += 1
             res.status(202).send('Emoji added')
         }
         
 
+
         // This works, other parameters to be added?
+        // This is best done in a switch statement so not to risk having multiple parameters sent at one time so causing issues
+
+        //Works now
+
+
 
 
     }catch(err){

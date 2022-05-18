@@ -90,7 +90,7 @@ app.post('/jokes/new', (req, res) => {
 
 
 //Post new comment
-app.post('/jokes/:id/comments', (req, res)=>{
+app.post('/jokes/:id/comments/new', (req, res)=>{
     try{
         // determine :id and search for comments
         const joke = jokes.find(e=> e.id == req.params.id)
@@ -170,11 +170,13 @@ app.delete('/jokes/:id/comments', (req, res)=>{
             }
         }
 
+
         //Could be done better
         //If the joke object exists get the comments and find comment to remove by id
         if(objToRemove){
             let {comments} =objToRemove
 
+            //!! Works fine
             //Store index to remove
             let indexToRemove
             for (const comment of comments) {
@@ -183,8 +185,11 @@ app.delete('/jokes/:id/comments', (req, res)=>{
                 }
             }
 
+            console.log('index to remove ' + indexToRemove)
+
+
             //Remove comment by index
-            if(indexToRemove){
+            if(indexToRemove || indexToRemove == 0){
                 comments.splice(indexToRemove, 1)
                 console.log(`Comment ${req.body.commentText} was deleted`)
                 res.status(204).send(`Comment ${req.body.commentText} was deleted`)
@@ -192,8 +197,6 @@ app.delete('/jokes/:id/comments', (req, res)=>{
             }else{
                 throw new Error('Could not find comment')
             }
-
-
             
         }else{
             //else throw error

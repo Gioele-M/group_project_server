@@ -238,4 +238,13 @@ let objectTypeCommentMany = [
 
 
 
+
+
+//--------------------------
+
+
+
+
+
+
 module.exports = {objectTypeJoke, objectTypeComment, objectTypeJokeMany, sampleRequestJoke, sampleRequestComment,  objectTypeCommentMany}

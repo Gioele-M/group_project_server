@@ -27,14 +27,15 @@ This is an amazing description of the project
 - node.js
 - express.js
 - jest
+- Excalidraw
 
 ---
 
 ## Process
 
-- Started by planning the group work
+- Started by planning the group work in Google docs
 - Wrote psuedo code to understand the steps of what needed to be done
--
+- Agreed on
 
 ---
 
@@ -55,22 +56,3 @@ This is an amazing description of the project
 ---
 
 ## License
-
-- [ISC License](https://opensource.org/licenses/ISC)
-
----
-
-## to do extras
-
-add user id popup, only correct users can change this
-
-# to do immediate
-
--add other endpoints
-patch and put - comments
-
-- Make model of request (fetch) -> develop fn for event listener
-
-- Start connect frontend
-
-- Test

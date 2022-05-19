@@ -1,0 +1,53 @@
+[
+	{
+		"id": 1,
+		"jokeText": "What's the difference between a poorly dressed man on a bicycle and a nicely dressed man on a tricycle?",
+		"jokeEmoji": "#",
+		"jokeReactions": {
+			"emoji1": 0,
+			"emoji2": 0,
+			"emoji3": 0
+		},
+		"comments": [
+			{
+				"commentID": 1,
+				"commentText": "I don't know. What's the difference between a poorly dressed man on a bicycle and a nicely dressed man on a tricycle?",
+				"commentReactions": {
+					"emoji1": 0,
+					"emoji2": 0,
+					"emoji3": 0
+				}
+			},
+			{
+				"commentID": 2,
+				"commentText": "A tire!",
+				"commentReactions": {
+					"emoji1": 3,
+					"emoji2": 2,
+					"emoji3": 5
+				}
+			}
+		]
+	},
+	{
+		"id": 2,
+		"jokeText": "Why was the cookie sad?",
+		"jokeEmoji": "#",
+		"jokeReactions": {
+			"emoji1": 0,
+			"emoji2": 10,
+			"emoji3": 0
+		},
+		"comments": [
+			{
+				"commentID": 1,
+				"commentText": "Because his mom was a wafer long!",
+				"commentReactions": {
+					"emoji1": 2,
+					"emoji2": 4,
+					"emoji3": 7
+				}
+			}
+		]
+	}
+]

@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/endpoints', (req, res) => {
-	res.send(listEndpoints(app));
+	res.status(200).send(listEndpoints(app));
 });
 
 // Get all jokes

@@ -64,9 +64,9 @@ describe('API server', () => {
 	};
 
 	let patchJoke = {
-		// id: 3,
+		id: 3,
 		jokeText: 'This is a changed joke text',
-		jokeEmoji: '#',
+		jokeEmoji: '😎',
 		jokeReactions: {
 			emoji1: 1,
 			emoji2: 3,
@@ -112,6 +112,10 @@ describe('API server', () => {
 	// -------- GET
 	test('it responds to get / with status 200', (done) => {
 		request(api).get('/').expect(200, done);
+	});
+
+	test('it responds to get /endpoints with status 200', (done) => {
+		request(api).get('/endpoints').expect(200, done);
 	});
 
 	test('it responds to get /jokes with status 200', (done) => {
@@ -238,8 +242,13 @@ describe('API server', () => {
 	});
 
 	// -------- PATCH
+
+	// DOES NOT WORK!!!!!!
 	test('responds to patch jokes/:id with 202', (done) => {
-		request(api).patch('/jokes/3').send(patchJoke).expect(202, done);
+		request(api)
+			.patch('/jokes/2')
+			.expect(202)
+			.expect({ message: 'Joke changes accepted' }, done);
 	});
 
 	test('responds to patch non-existent joke with 404', (done) => {
@@ -250,11 +259,29 @@ describe('API server', () => {
 			.expect({ message: 'This joke does not exist' }, done);
 	});
 
-	// test('responds to patching emoji in jokes/:id with 202', (done) => {
-	// 	request(api).patch('/jokes/3').send(patchComment).expect(202, done);
-	// });
+	//  DOES NOT WORK!!!!!
+	test('responds to patching emoji in jokes/:id with 202', (done) => {
+		request(api)
+			.patch('/jokes/1')
+			.send(patchComment)
+			.expect(202)
+			.expect({ message: 'Joke giphy added' }, done);
+	});
 
 	test('responds to patch non existent joke comments with 404', (done) => {
 		request(api).patch('/jokes/394/comments').send(patchJoke).expect(404, done);
+	});
+
+	// DOES NOT WORK!!!!!
+	test('responds to patch /jokes/:id/comments with 202', (done) => {
+		request(api).patch('/jokes/2/comments').send(patchJoke).expect(202, done);
+	});
+
+	test('responds to patch non-existent joke with 404', (done) => {
+		request(api)
+			.patch('/jokes/394/comments')
+			.send(patchJoke)
+			.expect(404)
+			.expect({ message: 'This joke does not exist' }, done);
 	});
 });

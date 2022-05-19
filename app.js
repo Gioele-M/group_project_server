@@ -1,12 +1,11 @@
-const express = require('express');
-const app = express();
-const cors = require('cors');
-const data = require('./data');
-const listEndpoints = require('express-list-endpoints');
-
-let jokes = data.objectTypeJokeMany;
-let comments = data.objectTypeCommentMany;
-let singleComment = data.objectTypeComment;
+const express = require('express')
+const app = express()
+const cors = require('cors')
+const dayjs = require('dayjs')
+const data = require('./data')
+let jokes = data.objectTypeJokeMany
+let comments  = data.objectTypeCommentMany
+let singleComment = data.objectTypeComment
 
 // middlewares
 app.use(cors());
@@ -14,6 +13,13 @@ app.use(express.json());
 
 //Refactor code as in
 //Functions for repeated bits - If else in ? :
+
+
+function returnTimeStamp(){
+    return dayjs().format('ddd, MMM D, YYYY h:mm A')
+}
+
+
 
 // To be deleted
 app.get('/', (req, res) => {
@@ -72,7 +78,7 @@ app.post('/jokes/new', (req, res) => {
 
 	const newJokeId = jokes[jokes.length - 1].id + 1;
 
-	const newJoke = { ...req.body, id: newJokeId };
+	const newJoke = { ...req.body, id: newJokeId , timeStamp: returnTimeStamp()}
 	jokes.push(newJoke);
 	res.status(201).send(`The joke was posted! Joke id: ${newJokeId}`);
 });
@@ -92,7 +98,7 @@ app.post('/jokes/:id/comments/new', (req, res) => {
 			//Get the object comments from joke, check last comment ID, add ID to response body, append comment, send success response
 			const newCommentId =
 				joke.comments[joke.comments.length - 1].commentID + 1;
-			joke.comments.push({ ...req.body, commentID: newCommentId });
+			joke.comments.push({ ...req.body, commentID: newCommentId, timeStamp: returnTimeStamp() });
 			res.status(201).send(req.body.commentText + '. Was posted');
 		}
 	} catch (err) {

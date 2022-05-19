@@ -1,8 +1,9 @@
 # Jokes 'r Us
 
 ![GitHub language count](https://img.shields.io/github/languages/count/Gioele-M/group_project_server)
+![GitHub](https://img.shields.io/github/license/Gioele-M/group_project_server)
 
-This is an amazing description of the project
+This is a backend
 
 ---
 
@@ -35,7 +36,7 @@ This is an amazing description of the project
 
 - Started by planning the group work in Google docs
 - Wrote psuedo code to understand the steps of what needed to be done
-- Agreed on
+-
 
 ---
 

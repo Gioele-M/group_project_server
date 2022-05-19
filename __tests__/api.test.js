@@ -85,17 +85,61 @@ describe('API server', () => {
 		],
 	};
 
-	let patchComment = {
-		comments: [
-			{
-				commentID: 1,
-				commentText: 'This is a changed comment',
-				commentReactions: {
-					emoji2: 5,
-					emoji3: 1,
-				},
-			},
-		],
+	let samplePatchCommentText = {
+		commentID: 1,
+		commentText: 'Test comment 2',
+	};
+
+	let samplePatchFakeComment = {
+		commentID: 394,
+		commentText: 'No such thing',
+	};
+
+	let samplePatchJokeText = {
+		jokeText: 'This it!',
+	};
+
+	let samplePatchJokeEmoji = {
+		jokeEmoji: 'This is the text that goes instead of link',
+	};
+
+	let samplePatchJokeReaction1 = {
+		jokeReactions: {
+			emoji1: 1,
+		},
+	};
+
+	let samplePatchJokeReaction2 = {
+		jokeReactions: {
+			emoji2: 1,
+		},
+	};
+
+	let samplePatchJokeReaction3 = {
+		jokeReactions: {
+			emoji3: 1,
+		},
+	};
+
+	let samplePatchCommentReaction1 = {
+		commentID: 1,
+		commentReactions: {
+			emoji1: 1,
+		},
+	};
+
+	let samplePatchCommentReaction2 = {
+		commentID: 1,
+		commentReactions: {
+			emoji2: 1,
+		},
+	};
+
+	let samplePatchCommentReaction3 = {
+		commentID: 1,
+		commentReactions: {
+			emoji3: 1,
+		},
 	};
 
 	beforeAll(() => {
@@ -242,13 +286,9 @@ describe('API server', () => {
 	});
 
 	// -------- PATCH
-
-	// DOES NOT WORK!!!!!!
+	// ----- Original post
 	test('responds to patch jokes/:id with 202', (done) => {
-		request(api)
-			.patch('/jokes/2')
-			.expect(202)
-			.expect({ message: 'Joke changes accepted' }, done);
+		request(api).patch('/jokes/2').send(samplePatchJokeText).expect(202, done);
 	});
 
 	test('responds to patch non-existent joke with 404', (done) => {
@@ -259,29 +299,72 @@ describe('API server', () => {
 			.expect({ message: 'This joke does not exist' }, done);
 	});
 
-	//  DOES NOT WORK!!!!!
 	test('responds to patching emoji in jokes/:id with 202', (done) => {
+		request(api).patch('/jokes/1').send(samplePatchJokeEmoji).expect(202, done);
+	});
+
+	test('responds to patching jokeReaction emoji in jokes/:id with 202', (done) => {
 		request(api)
 			.patch('/jokes/1')
-			.send(patchComment)
-			.expect(202)
-			.expect({ message: 'Joke giphy added' }, done);
+			.send(samplePatchJokeReaction1)
+			.expect(202, done);
 	});
 
-	test('responds to patch non existent joke comments with 404', (done) => {
-		request(api).patch('/jokes/394/comments').send(patchJoke).expect(404, done);
+	test('responds to patching jokeReaction emoji in jokes/:id with 202', (done) => {
+		request(api)
+			.patch('/jokes/1')
+			.send(samplePatchJokeReaction2)
+			.expect(202, done);
 	});
 
-	// DOES NOT WORK!!!!!
+	test('responds to patching jokeReaction emoji in jokes/:id with 202', (done) => {
+		request(api)
+			.patch('/jokes/1')
+			.send(samplePatchJokeReaction3)
+			.expect(202, done);
+	});
+
+	// ----- PATCH comments
 	test('responds to patch /jokes/:id/comments with 202', (done) => {
-		request(api).patch('/jokes/2/comments').send(patchJoke).expect(202, done);
+		request(api)
+			.patch('/jokes/2/comments')
+			.send(samplePatchCommentText)
+			.expect(202, done);
 	});
 
-	test('responds to patch non-existent joke with 404', (done) => {
+	test('responds to patch comment reaction emoji1 with 202', (done) => {
+		request(api)
+			.patch('/jokes/2/comments')
+			.send(samplePatchCommentReaction1)
+			.expect(202, done);
+	});
+
+	test('responds to patch /jokes/:id/comments with 202', (done) => {
+		request(api)
+			.patch('/jokes/2/comments')
+			.send(samplePatchCommentReaction2)
+			.expect(202, done);
+	});
+
+	test('responds to patch /jokes/:id/comments with 202', (done) => {
+		request(api)
+			.patch('/jokes/2/comments')
+			.send(samplePatchCommentReaction3)
+			.expect(202, done);
+	});
+
+	test('responds to patch comment in non-existent joke with 404', (done) => {
 		request(api)
 			.patch('/jokes/394/comments')
 			.send(patchJoke)
 			.expect(404)
 			.expect({ message: 'This joke does not exist' }, done);
+	});
+
+	test('responds to patch non-existent comment with 404', (done) => {
+		request(api)
+			.patch('/jokes/2/comments')
+			.send(samplePatchFakeComment)
+			.expect(404, done);
 	});
 });

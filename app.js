@@ -1,11 +1,11 @@
-const express = require('express')
-const app = express()
-const cors = require('cors')
-const dayjs = require('dayjs')
-const data = require('./data')
-let jokes = data.objectTypeJokeMany
-let comments  = data.objectTypeCommentMany
-let singleComment = data.objectTypeComment
+const express = require('express');
+const app = express();
+const cors = require('cors');
+const dayjs = require('dayjs');
+const data = require('./data');
+let jokes = data.objectTypeJokeMany;
+let comments = data.objectTypeCommentMany;
+let singleComment = data.objectTypeComment;
 
 // middlewares
 app.use(cors());
@@ -14,19 +14,17 @@ app.use(express.json());
 //Refactor code as in
 //Functions for repeated bits - If else in ? :
 
-
-function returnTimeStamp(){
-    return dayjs().format('ddd, MMM D, YYYY h:mm A')
+function returnTimeStamp() {
+	return dayjs().format('ddd, MMM D, YYYY h:mm A');
 }
 
-
-
-// To be deleted
+// Server running
 app.get('/', (req, res) => {
 	// .get requires the page
-	res.status(200).send('Hello Auguste!'); //This is what's put on the page
+	res.status(200).send('Hello Auguste!');
 });
 
+// Get all server endpoints
 app.get('/endpoints', (req, res) => {
 	res.status(200).send(listEndpoints(app));
 });
@@ -34,7 +32,6 @@ app.get('/endpoints', (req, res) => {
 // Get all jokes
 app.get('/jokes', (req, res) => {
 	res.status(200).send(jokes);
-	// --------- remember to define jokes
 });
 
 // Get individual joke
@@ -74,16 +71,13 @@ app.get('/jokes/:id/comments', (req, res) => {
 // Post new joke
 app.post('/jokes/new', (req, res) => {
 	// Adjust to get index of last item as if elements are deleted will overlap
-	//const newJokeId = jokes.length + 1
 
 	const newJokeId = jokes[jokes.length - 1].id + 1;
 
-	const newJoke = { ...req.body, id: newJokeId , timeStamp: returnTimeStamp()}
+	const newJoke = { ...req.body, id: newJokeId, timeStamp: returnTimeStamp() };
 	jokes.push(newJoke);
 	res.status(201).send(`The joke was posted! Joke id: ${newJokeId}`);
 });
-
-// Post requires the whole object in the body of the request!
 
 //Post new comment
 app.post('/jokes/:id/comments/new', (req, res) => {
@@ -98,7 +92,11 @@ app.post('/jokes/:id/comments/new', (req, res) => {
 			//Get the object comments from joke, check last comment ID, add ID to response body, append comment, send success response
 			const newCommentId =
 				joke.comments[joke.comments.length - 1].commentID + 1;
-			joke.comments.push({ ...req.body, commentID: newCommentId, timeStamp: returnTimeStamp() });
+			joke.comments.push({
+				...req.body,
+				commentID: newCommentId,
+				timeStamp: returnTimeStamp(),
+			});
 			res.status(201).send(req.body.commentText + '. Was posted');
 		}
 	} catch (err) {
@@ -122,12 +120,9 @@ app.delete('/jokes/:id', (req, res) => {
 			}
 		}
 
-		//Could be done better
 		//If the object exists, remove it and send success status
 		if (objToRemove) {
 			jokes.splice(indexToRemove, 1);
-
-			console.log(`Joke ${req.params.id} was deleted`);
 			res.status(204).send('Joke was removed');
 		} else {
 			//else throw error
@@ -136,7 +131,6 @@ app.delete('/jokes/:id', (req, res) => {
 			);
 		}
 	} catch (err) {
-		console.log('Something went wrong ' + err.message);
 		res.status(404).send({ message: err.message });
 	}
 });
@@ -157,12 +151,10 @@ app.delete('/jokes/:id/comments', (req, res) => {
 			}
 		}
 
-		//Could be done better
 		//If the joke object exists get the comments and find comment to remove by id
 		if (objToRemove) {
 			let { comments } = objToRemove;
 
-			//!! Works fine
 			//Store index to remove
 			let indexToRemove;
 			for (const comment of comments) {
@@ -171,29 +163,23 @@ app.delete('/jokes/:id/comments', (req, res) => {
 				}
 			}
 
-			console.log('index to remove ' + indexToRemove);
-
 			//Remove comment by index
 			if (indexToRemove || indexToRemove == 0) {
 				comments.splice(indexToRemove, 1);
-				console.log(`Comment ${req.body.commentText} was deleted`);
 				res.status(204).send(`Comment ${req.body.commentText} was deleted`);
 			} else {
 				throw new Error('Could not find comment');
 			}
 		} else {
-			//else throw error
 			throw new Error('The reference joke id is not valid');
 		}
 	} catch (err) {
-		console.log('Something went wrong ' + err.message);
 		res.status(404).send({ message: err.message });
 	}
 });
 
 // Patching endpoints
 // Change text content of joke
-
 app.patch('/jokes/:id', (req, res) => {
 	try {
 		//Check that the joke exists, if it does return object reference,if it doesn't throw error
@@ -202,7 +188,6 @@ app.patch('/jokes/:id', (req, res) => {
 		for (const joke of jokes) {
 			if (joke.id == req.params.id) {
 				objToChange = joke;
-				console.log('Object was found');
 			}
 		}
 		if (!objToChange) throw new Error('This joke does not exist');
@@ -211,15 +196,14 @@ app.patch('/jokes/:id', (req, res) => {
 
 		if (req.body.jokeText) {
 			objToChange.jokeText = req.body.jokeText;
-			console.log('Text was updated!');
+
 			res.status(202).send('Joke changes accepted');
 			res.end();
 		} else if (req.body.jokeEmoji) {
 			objToChange.jokeEmoji = req.body.jokeEmoji;
-			console.log('Emoji was updated');
+
 			res.status(202).send('Joke giphy added');
 		} else if (req.body.jokeReactions.emoji1) {
-			console.log('it found the emoji1');
 			objToChange.jokeReactions.emoji1 += 1;
 			res.status(202).send('Emoji added');
 		} else if (req.body.jokeReactions.emoji2) {
@@ -230,10 +214,7 @@ app.patch('/jokes/:id', (req, res) => {
 			res.status(202).send('Emoji added');
 		}
 
-		// This works, other parameters to be added?
 		// This is best done in a switch statement so not to risk having multiple parameters sent at one time so causing issues
-
-		//Works now
 
 		if (req.body.jokeText) {
 			objToChange.jokeText = req.body.jokeText;
@@ -262,8 +243,6 @@ app.patch('/jokes/:id', (req, res) => {
 	}
 });
 
-// Need to make sure patch endpoint changes value of emojis too, then do the same for comments!
-
 app.patch('/jokes/:id/comments', (req, res) => {
 	try {
 		//Check that the joke exists, if it does return object reference,if it doesn't throw error
@@ -272,7 +251,6 @@ app.patch('/jokes/:id/comments', (req, res) => {
 		for (const joke of jokes) {
 			if (joke.id == req.params.id) {
 				objToChange = joke;
-				console.log('Object was found');
 			}
 		}
 		if (!objToChange) throw new Error('This joke does not exist');
@@ -308,8 +286,6 @@ app.patch('/jokes/:id/comments', (req, res) => {
 			commentToChange.commentReactions.emoji3 += 1;
 			res.status(202).send('Emoji added');
 		}
-
-		// This works, other parameters to be added?
 	} catch (err) {
 		res.status(404).send({ message: err.message });
 	}

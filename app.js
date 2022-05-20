@@ -3,6 +3,7 @@ const app = express();
 const cors = require('cors');
 const dayjs = require('dayjs');
 const data = require('./data');
+const listEndpoints = require('express-list-endpoints')
 let jokes = data.objectTypeJokeMany;
 let comments = data.objectTypeCommentMany;
 let singleComment = data.objectTypeComment;

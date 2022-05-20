@@ -1,0 +1,73 @@
+[{
+    "id": 1, 
+    "jokeText": "Why did the chicken cross the road?",
+    "jokeEmoji": "#",
+    "jokeReactions": {
+        "emoji1": 0,
+        "emoji2": 0,
+        "emoji3": 0 
+    },
+    "comments": [
+        {
+            "commentID": 1, 
+            "commentText": "Not sure, why?",
+            "commentReactions":{
+                "emoji1": 0, 
+                "emoji2": 0,
+                "emoji3": 0 
+            }
+        },
+        {
+            "commentID": 2, 
+            "commentText": "Because IDK any jokes in English",
+            "commentReactions":{
+                "emoji1": 0, 
+                "emoji2": 0,
+                "emoji3": 0 
+            }
+        }
+    ]
+},
+{
+    "id": 2, 
+    "jokeText": "Based on user input, refer to input in html",
+    "jokeEmoji": "#",
+    "jokeReactions": {
+        "emoji1": 0,
+        "emoji2": 0,
+        "emoji3": 0 
+    },
+    "comments": [
+        {
+            "commentID": 1, 
+            "commentText": "Only one comment!!",
+            "commentReactions":{
+                "emoji1": 0, 
+                "emoji2": 0,
+                "emoji3": 0 
+            }
+        }
+    ]
+},
+{
+    "id": 3, 
+    "jokeText": "Based on user input, refer to input in html",
+    "jokeEmoji": "#",
+    "jokeReactions": {
+        "emoji1": 0,
+        "emoji2": 0,
+        "emoji3": 0 
+    },
+    "comments": [
+        {
+            "commentID": 1, 
+            "commentText": "Only one comment!!",
+            "commentReactions":{
+                "emoji1": 0, 
+                "emoji2": 0,
+                "emoji3": 0 
+            }
+        }
+    ]
+}
+]

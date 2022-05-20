@@ -214,28 +214,28 @@ app.patch('/jokes/:id', (req, res) => {
 			res.status(202).send('Emoji added');
 		}
 
-		// This is best done in a switch statement so not to risk having multiple parameters sent at one time so causing issues
+		// // This is best done in a switch statement so not to risk having multiple parameters sent at one time so causing issues
 
-		if (req.body.jokeText) {
-			objToChange.jokeText = req.body.jokeText;
-			console.log('Text was updated!');
-			res.status(202).send('Joke changes accepted');
-		}
+		// if (req.body.jokeText) {
+		// 	objToChange.jokeText = req.body.jokeText;
+		// 	console.log('Text was updated!');
+		// 	res.status(202).send('Joke changes accepted');
+		// }
 
-		if (req.body.jokeReactions.emoji1) {
-			objToChange.jokeReactions.emoji1 += 1;
-			res.status(202).send('Emoji added');
-		}
+		// if (req.body.jokeReactions.emoji1) {
+		// 	objToChange.jokeReactions.emoji1 += 1;
+		// 	res.status(202).send('Emoji added');
+		// }
 
-		if (req.body.jokeReactions.emoji2) {
-			objToChange.jokeReactions.emoji2 += 1;
-			res.status(202).send('Emoji added');
-		}
+		// if (req.body.jokeReactions.emoji2) {
+		// 	objToChange.jokeReactions.emoji2 += 1;
+		// 	res.status(202).send('Emoji added');
+		// }
 
-		if (req.body.jokeReactions.emoji3) {
-			objToChange.jokeReactions.emoji3 += 1;
-			res.status(202).send('Emoji added');
-		}
+		// if (req.body.jokeReactions.emoji3) {
+		// 	objToChange.jokeReactions.emoji3 += 1;
+		// 	res.status(202).send('Emoji added');
+		// }
 
 		// This works, other parameters to be added?
 	} catch (err) {
